@@ -17,7 +17,7 @@ Edit your sway config to point to your newly built status command:
 bar {
     # When the status_command prints a new line to stdout, swaybar updates.
     # The default just shows the current date and time.
-    status_command while true; do /prg/stats; done
+    status_command while true; do /path/to/status; done
 
 	# config for swaybar continues here...
 }
