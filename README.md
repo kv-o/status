@@ -1,7 +1,7 @@
 # status
 Status command for sway.
 
-# Building
+## Building
 
 Build like a regular C program:
 
@@ -9,7 +9,7 @@ Build like a regular C program:
 cc -o status status.c
 ```
 
-# Setup
+## Setup
 
 Edit your sway config to point to your newly built status command:
 
@@ -19,7 +19,7 @@ bar {
     # The default just shows the current date and time.
     status_command while true; do /path/to/status; done
 
-	# config for swaybar continues here...
+    # config for swaybar continues here...
 }
 ```
 
