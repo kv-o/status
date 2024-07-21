@@ -26,12 +26,12 @@ char    buf[512];
 char    datestr[32];
 char    timestr[32];
 time_t  now;
-struct  tm *local;
 char    *format;
 
 struct timespec request = {0, 500000000};
 struct timespec remaining = {0, 500000000};
 struct sysinfo  meminfo;
+struct tm      *local;
 
 int
 main(void)
