@@ -31,7 +31,7 @@ char    *format;
 struct timespec request = {0, 500000000};
 struct timespec remaining = {0, 500000000};
 struct sysinfo  meminfo;
-struct tm      *local;
+struct tm       *local;
 
 int
 main(void)
