@@ -44,24 +44,22 @@ main(void)
 		assert(n == 1);
 		buf[511] = 0;
 		token = strtok(buf, " ");
-		for (j = 0; j < 11; j++) {
+		for (j = 0; j < 10; j++) {
 			token = strtok(NULL, " ");
-			if (j > 0) {
-				k = atoi(token);
-				cputotal[i] += k;
-			}
+			k = atoi(token);
+			cputotal[i] += k;
 			if (j == 3)
 				cpuidle[i] = k;
 		}
 		fclose(cpufile);
 		nanosleep(&request, &remaining);
 	}
-	cpuidle[3] = cpuidle[1] - cpuidle[0];
-	cputotal[3] = cputotal[1] - cputotal[0];
-	if (cputotal[3] == 0)
+	cpuidle[2] = cpuidle[1] - cpuidle[0];
+	cputotal[2] = cputotal[1] - cputotal[0];
+	if (cputotal[2] == 0)
 		cpubusy = 100;
 	else
-		cpubusy = cpuidle[3] / cputotal[3] * 100;
+		cpubusy = cpuidle[2] / cputotal[2] * 100;
 	cpu = round(100 - cpubusy);
 
 	/* memory */
