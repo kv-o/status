@@ -15,11 +15,12 @@ int     k;
 int     cpu = 0;
 FILE    *cpufile;
 double  cpuidle[3];
-double  cputotal[3] = {0, 0, 0};
+double  cputotal[3] = {0};
 double  cpubusy;
 char    *token;
 int     mem = 0;
-double  memfree;
+FILE    *memfile;
+double  meminfo[6] = {0};
 char    batt[4];
 FILE    *battfile;
 char    buf[512];
@@ -30,7 +31,6 @@ char    *format;
 
 struct timespec request = {0, 500000000};
 struct timespec remaining = {0, 500000000};
-struct sysinfo  meminfo;
 struct tm       *local;
 
 int
@@ -63,9 +63,19 @@ main(void)
 	cpu = round(100 - cpubusy);
 
 	/* memory */
-	assert(sysinfo(&meminfo) != -1);
-	memfree = meminfo.freeram + meminfo.bufferram + meminfo.sharedram;
-	mem = round(((meminfo.totalram - memfree) / meminfo.totalram) * 100);
+	memfile = fopen("/proc/meminfo", "r");
+	assert(memfile);
+	n = fread(buf, 512, 1, memfile);
+	assert(n == 1);
+	token = strtok(buf, " ");
+	for (i = 1; i < 6; i++) {
+		token = strtok(NULL, " ");
+		if (i == 1 || i == 3)
+			meminfo[i] = atoi(token);
+	}
+	fclose(memfile);
+	if (meminfo[1] != 0)
+		mem = round(meminfo[3] / meminfo[1] * 100);
 
 	/* battery */
 	battfile = fopen("/sys/class/power_supply/BAT0/capacity", "r");
