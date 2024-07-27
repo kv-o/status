@@ -20,7 +20,8 @@ double  cpubusy;
 char    *token;
 int     mem = 0;
 FILE    *memfile;
-double  meminfo[6] = {0};
+double  meminfo[10] = {0};
+double  memfree;
 char    batt[4];
 FILE    *battfile;
 char    buf[512];
@@ -68,14 +69,15 @@ main(void)
 	n = fread(buf, 512, 1, memfile);
 	assert(n == 1);
 	token = strtok(buf, " ");
-	for (i = 1; i < 6; i++) {
+	for (i = 1; i < 10; i++) {
 		token = strtok(NULL, " ");
-		if (i == 1 || i == 3)
+		if (i == 1 || i == 3 || i == 7 || i == 9)
 			meminfo[i] = atoi(token);
 	}
 	fclose(memfile);
+	memfree = meminfo[3] + meminfo[7] + meminfo[9];
 	if (meminfo[1] != 0)
-		mem = round(meminfo[3] / meminfo[1] * 100);
+		mem = round((meminfo[1] - memfree) / meminfo[1] * 100);
 
 	/* battery */
 	battfile = fopen("/sys/class/power_supply/BAT0/capacity", "r");
