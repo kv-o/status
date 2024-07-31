@@ -83,8 +83,13 @@ main(void)
 	battfile = fopen("/sys/class/power_supply/BAT0/capacity", "r");
 	assert(battfile);
 	n = fread(buf, 3, 1, battfile);
-	assert(n == 1);
-	buf[3] = '\0';
+	if (n != 1 && !feof(battfile)) {
+		fprintf(stderr, "status: error reading battery status\n");
+		return 1;
+	}
+	for (i = 0; i < 4; i++)
+		if (buf[i] == '\n')
+			buf[i] = '\0';
 	strcpy(batt, buf);
 	fclose(battfile);
 
